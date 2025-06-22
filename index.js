@@ -1,23 +1,18 @@
-const puppeteer = require('puppeteer');
+const chromium = require('chrome-aws-lambda');
 
 (async () => {
-  // 🧠 Launch Chrome browser
-  const browser = await puppeteer.launch({
-    headless: true, // visible browser
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  const browser = await chromium.puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath,
+    headless: true,
   });
 
   const page = await browser.newPage();
+  await page.goto('https://example.com', { waitUntil: 'networkidle2' });
 
-  // 🌐 Go to example.com
-  await page.goto('https://example.com', {
-    waitUntil: 'networkidle2'
-  });
-
-  // 📄 Print page title
   const title = await page.title();
   console.log('✅ Page Title:', title);
 
-  // ❌ Optional: close browser
-  // await browser.close();
+  await browser.close();
 })();
