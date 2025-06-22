@@ -1,16 +1,23 @@
 const puppeteer = require('puppeteer');
 
 (async () => {
+  // 🧠 Launch Chrome browser
   const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'] // Required for Render
+    headless: true, // visible browser
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   const page = await browser.newPage();
-  await page.goto('https://example.com', { waitUntil: 'networkidle2' });
 
+  // 🌐 Go to example.com
+  await page.goto('https://example.com', {
+    waitUntil: 'networkidle2'
+  });
+
+  // 📄 Print page title
   const title = await page.title();
-  console.log('✅ Page title is:', title);
+  console.log('✅ Page Title:', title);
 
-  await browser.close();
+  // ❌ Optional: close browser
+  // await browser.close();
 })();
